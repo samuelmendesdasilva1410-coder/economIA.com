@@ -89,3 +89,5 @@ while True:
         else:
             print("Opção inválida.")
             break
+
+        print()
