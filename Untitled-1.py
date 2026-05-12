@@ -3,14 +3,17 @@ print('bem vindo ao seu assistente virtual, e professsor de economia, economIA!'
 nome = input("qual o seu nome?:")
 print('1 - analise geral financeira\n2 - meta finaceira')
 op = int(input('o que voce quer fazer?'))
-if op == '2':
+if op == 2:
     meta = float(input("Qual valor você deseja juntar? R$ "))
     guardar = float(input("Quanto consegue guardar por mês? R$ "))
 
     meses = meta / guardar
 
     print(f"Você levará aproximadamente {meses:.0f} meses para atingir sua meta.")
-if op == '1':
+    if meta < guardar:
+        print("voce ja atingiu sua meta")
+
+if op == 1:
     while True:
             salario = float(input('primeiro eu preciso saber o quanto voce recebe de salario, insira aqui:'))
             print("okay!!!")
@@ -19,12 +22,12 @@ if op == '1':
             lazer = float(input("Gasto com lazer: "))
             economia = float(input('quanto voce economiza por mês: '))
             reserva = float(input('quanto voce guarda para possiveis emergencias: '))
-            gasto = alimentacao + transporte + lazer
-            porcentagem_comida = int(alimentacao / salario) * 100        
-            porcentagem_transporte = int(transporte / salario) * 100
-            porcentagem_lazer = int(lazer / salario) * 100
-            porcentagem_economia = int(economia / salario) * 100
-            porcentagem_reserva = int(reserva / salario) * 100
+            gasto = alimentacao + transporte + lazer + economia + reserva
+            porcentagem_comida = float(alimentacao / salario) * 100        
+            porcentagem_transporte = float(transporte / salario) * 100
+            porcentagem_lazer = float(lazer / salario) * 100
+            porcentagem_economia = float(economia / salario) * 100
+            porcentagem_reserva = float(reserva / salario) * 100
             alimentacao_transporte_lazer = (porcentagem_comida + porcentagem_transporte + porcentagem_lazer) 
             divisao_ideal = (porcentagem_comida + porcentagem_transporte + porcentagem_lazer) < 80% salario
             import time 
@@ -32,28 +35,34 @@ if op == '1':
                 print("calculando...")
                 time.sleep(1)
             if gasto > salario * 0.6:
-                print(f'voce esta gastando {porcentagem_comida}% do seu salario em comida')
-                print(f'voce esta gastando {porcentagem_transporte}% do seu salario em transporte')
-                print(f'voce esta gastando {porcentagem_lazer}% do seu salario em lazer')
-                if porcentagem_comida + porcentagem_transporte + porcentagem_lazer != divisao_ideal:
-                    print("cuidado!, voce nao esta dividindo corretamente seu dinheiro, e esta gastando mais de 60% em suas despesas")
-                    decisao = input("voce deseja saber a decisao ideal para voce?, s/n")
+                print(f'voce esta gastando {porcentagem_comida}% do seu salario em comida por mes')
+                print(f'voce esta gastando {porcentagem_transporte}% do seu salario em transporte por mes')
+                print(f'voce esta gastando {porcentagem_lazer}% do seu salario em lazer por mes')
+                print(f'voce esta economizando {porcentagem_economia}% do seu salario por mes')
+                print(f'voce esta guardando {porcentagem_reserva}% do seu salario por mes')
+                print("=" * 80)
+                print("cuidado!, voce nao esta dividindo corretamente seu dinheiro, e esta gastando mais de 60% em suas despesas")
+                decisao = input("voce deseja saber a decisao ideal para voce?, s/n")
                 if decisao == 's':
                     print("\nSugestão de divisão ideal:")
                     print("60% alimentação, transporte e lazer")
                     print("20% reserva de emergencia")
                     print("20% economia")
                     print(f"comparando com a sua divisao:\n{alimentacao_transporte_lazer}% de alimentação, transporte e lazer\n{porcentagem_reserva}% de reserva de emergencia\n{porcentagem_economia} economiza por mes")
-
+                    print("=" * 30)
                 elif decisao == 'n':
                     print('ok:(')
                 elif (porcentagem_comida + porcentagem_transporte + porcentagem_lazer) <= divisao_ideal:
                     print('parabens a sua divisao salarial esta perfeita! ')
+                    print("=" * 30)
             elif gasto < salario * 0.6:
                 print(f'voce esta gastando {porcentagem_comida}% do seu salario em comida')
                 print(f'voce esta gastando {porcentagem_transporte}% do seu salario em transporte')
                 print(f'voce esta gastando {porcentagem_lazer}% do seu salario em lazer')
+                print(f'voce esta economizando {porcentagem_economia}% do seu salario por mes')
+                print(f'voce esta guardando {porcentagem_reserva}% do seu salario por mes')
                 print('parabens voce esta gastando o suficiente em suas despesas')
+                print("=" * 80)                
                 break
             ajuda = str(input('voce tambem/ao menos deseja ser ajudado por nossa IA para economizar??, s/n'))
             if ajuda == 's':
@@ -61,8 +70,10 @@ if op == '1':
                 print("2 como controlar minhas despesas desnecessarias")
                 print('3 como economizar dinheiro')
                 print('4 como melhorar sua vida financeira')
+                print("=" * 30)
             elif ajuda == 'n':
                 print("okay, encerrando o atendimento")
+                print("=" * 30)
                 break
             opcao = int(input('okay, entao eu a economIA irei te ajudar!!!\nqual opcao te ajudaria?'))
             if opcao == 1:
