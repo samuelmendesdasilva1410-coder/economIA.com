@@ -9,7 +9,7 @@ if op == 2:
 
     meses = meta / guardar
 
-    print(f"Você levará aproximadamente {meses:.0f} meses para atingir sua meta.")
+    print(f"Você levaimadamente {meses:.0f} meses para atingir sua meta.")
     if meta < guardar:
         print("voce ja atingiu sua meta") 
 if op == 1:
