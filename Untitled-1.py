@@ -11,8 +11,7 @@ if op == 2:
 
     print(f"Você levará aproximadamente {meses:.0f} meses para atingir sua meta.")
     if meta < guardar:
-        print("voce ja atingiu sua meta")
-
+        print("voce ja atingiu sua meta") 
 if op == 1:
     while True:
             salario = float(input('primeiro eu preciso saber o quanto voce recebe de salario, insira aqui:'))
@@ -23,13 +22,14 @@ if op == 1:
             economia = float(input('quanto voce economiza por mês: '))
             reserva = float(input('quanto voce guarda para possiveis emergencias: '))
             gasto = alimentacao + transporte + lazer + economia + reserva
-            porcentagem_comida = float(alimentacao / salario) * 100        
-            porcentagem_transporte = float(transporte / salario) * 100
-            porcentagem_lazer = float(lazer / salario) * 100
-            porcentagem_economia = float(economia / salario) * 100
-            porcentagem_reserva = float(reserva / salario) * 100
+            porcentagem_comida = int((alimentacao / salario) * 100)            
+            porcentagem_transporte = int((transporte / salario) * 100)
+            porcentagem_lazer = int((lazer / salario) * 100)
+            porcentagem_economia = int((economia / salario) * 100)
+            porcentagem_reserva = int((reserva / salario) * 100)
             alimentacao_transporte_lazer = (porcentagem_comida + porcentagem_transporte + porcentagem_lazer) 
             divisao_ideal = (porcentagem_comida + porcentagem_transporte + porcentagem_lazer) < 80% salario
+            print("=" * 60)
             import time 
             for i in range (3):
                 print("calculando...")
@@ -40,7 +40,7 @@ if op == 1:
                 print(f'voce esta gastando {porcentagem_lazer}% do seu salario em lazer por mes')
                 print(f'voce esta economizando {porcentagem_economia}% do seu salario por mes')
                 print(f'voce esta guardando {porcentagem_reserva}% do seu salario por mes')
-                print("=" * 80)
+                print("=" * 60)
                 print("cuidado!, voce nao esta dividindo corretamente seu dinheiro, e esta gastando mais de 60% em suas despesas")
                 decisao = input("voce deseja saber a decisao ideal para voce?, s/n")
                 if decisao == 's':
@@ -49,12 +49,12 @@ if op == 1:
                     print("20% reserva de emergencia")
                     print("20% economia")
                     print(f"comparando com a sua divisao:\n{alimentacao_transporte_lazer}% de alimentação, transporte e lazer\n{porcentagem_reserva}% de reserva de emergencia\n{porcentagem_economia} economiza por mes")
-                    print("=" * 30)
+                    print("=" * 60)
                 elif decisao == 'n':
                     print('ok:(')
                 elif (porcentagem_comida + porcentagem_transporte + porcentagem_lazer) <= divisao_ideal:
                     print('parabens a sua divisao salarial esta perfeita! ')
-                    print("=" * 30)
+                    print("=" * 60)
             elif gasto < salario * 0.6:
                 print(f'voce esta gastando {porcentagem_comida}% do seu salario em comida')
                 print(f'voce esta gastando {porcentagem_transporte}% do seu salario em transporte')
@@ -62,7 +62,7 @@ if op == 1:
                 print(f'voce esta economizando {porcentagem_economia}% do seu salario por mes')
                 print(f'voce esta guardando {porcentagem_reserva}% do seu salario por mes')
                 print('parabens voce esta gastando o suficiente em suas despesas')
-                print("=" * 80)                
+                print("=" * 60)                
                 break
             ajuda = str(input('voce tambem/ao menos deseja ser ajudado por nossa IA para economizar??, s/n'))
             if ajuda == 's':
@@ -70,10 +70,10 @@ if op == 1:
                 print("2 como controlar minhas despesas desnecessarias")
                 print('3 como economizar dinheiro')
                 print('4 como melhorar sua vida financeira')
-                print("=" * 30)
+                print("=" * 60)
             elif ajuda == 'n':
                 print("okay, encerrando o atendimento")
-                print("=" * 30)
+                print("=" * 60)
                 break
             opcao = int(input('okay, entao eu a economIA irei te ajudar!!!\nqual opcao te ajudaria?'))
             if opcao == 1:
@@ -81,6 +81,7 @@ if op == 1:
                 print("- Evite compras por impulso")
                 print("- Faça uma lista antes de comprar")
                 print("- Compare preços")
+                print("=" * 60)
                 gostou = input('voce gostou do atendimento? s/n')  
 
             elif opcao == 2:
@@ -88,18 +89,21 @@ if op == 1:
                 print("- Anote tudo que você gasta")
                 print("- Corte gastos que não são essenciais")
                 print("- Defina um limite mensal")
+                print("=" * 60)
                 gostou = input('voce gostou do atendimento? s/n')
             elif opcao == 3:
                 print("\nDicas para economizar dinheiro:")
                 print("- Guarde pelo menos 10%, do que ganha")
                 print("- Evite gastos desnecessários")
                 print("- Estabeleça metas de economia")
+                print("=" * 60)
                 gostou = input('voce gostou do atendimento? s/n')
             elif opcao == 4:
                 print("\nDicas para melhorar sua vida financeira:")
                 print("- Separe gastos fixos e variáveis")
                 print("- Planeje seu orçamento mensal")
                 print("- Evite dívidas desnecessárias")
+                print("=" * 60)
                 gostou = input('voce gostou do atendimento? s/n')
             
             if gostou == 's':
@@ -108,6 +112,7 @@ if op == 1:
             elif gostou == 'n':
                 print('o que podemos melhorar?')
                 print('1 melhorar as dicas\n2 ir direto ao ponto nas respostas\n3 melhorar a interface\n4 melhorar a IA em geral')
+                print("=" * 60)
                 melhorar = int(input('qual opcao representa melhor sua indignacao com nosso atendimento?\n'))
                 print("obrigado pelo feedback, procuraremos melhorar nesse quesito!\nencerrando nosso atendimento.")
                 break
