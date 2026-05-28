@@ -15,5 +15,5 @@ while True:
 
     break
 print(historico)
-#for transaces in historico:
-#print('->' + transaces)
+for transaces in historico:
+    print('->' + transaces)

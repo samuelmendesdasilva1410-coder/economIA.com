@@ -12,29 +12,35 @@ if op == 2:
     print(f"Você levará aproximadamente {meses:.0f} meses para atingir sua meta.")
     if meta < guardar:
         print("voce ja atingiu sua meta") 
+    
+    
 if op == 1:
+    salario = []
+    salariooo = int(input('primeiro preciso saber seu salario:'))
+    salarioo = 'seu salario é de: '+ str(salariooo)
+    salario.append(salarioo)
     while True:
-            salario = float(input('primeiro eu preciso saber o quanto voce recebe de salario, insira aqui:'))
-            print("okay!!!")
             alimentacao = float(input("Gasto com alimentação: "))
             transporte = float(input("Gasto com transporte: "))
             lazer = float(input("Gasto com lazer: "))
             economia = float(input('quanto voce economiza por mês: '))
             reserva = float(input('quanto voce guarda para possiveis emergencias: '))
             gasto = alimentacao + transporte + lazer + economia + reserva
-            porcentagem_comida = int((alimentacao / salario) * 100)            
-            porcentagem_transporte = int((transporte / salario) * 100)
-            porcentagem_lazer = int((lazer / salario) * 100)
-            porcentagem_economia = int((economia / salario) * 100)
-            porcentagem_reserva = int((reserva / salario) * 100)
+            porcentagem_comida = int((alimentacao / salariooo) * 100)            
+            porcentagem_transporte = int((transporte / salariooo) * 100)
+            porcentagem_lazer = int((lazer / salariooo) * 100)
+            porcentagem_economia = int((economia / salariooo) * 100)
+            porcentagem_reserva = int((reserva / salariooo) * 100)
             alimentacao_transporte_lazer = (porcentagem_comida + porcentagem_transporte + porcentagem_lazer) 
-            divisao_ideal = (porcentagem_comida + porcentagem_transporte + porcentagem_lazer) < 80% salario
+            divisao_ideal = (porcentagem_comida + porcentagem_transporte + porcentagem_lazer) < 80% salariooo
             print("=" * 60)
             import time 
             for i in range (3):
                 print("calculando...")
                 time.sleep(1)
-            if gasto > salario * 0.6:
+            if gasto > salariooo * 0.6:
+                salario.append(salarioo)
+                print(salario[0] + 'reais')
                 print(f'voce esta gastando {porcentagem_comida}% do seu salario em comida por mes')
                 print(f'voce esta gastando {porcentagem_transporte}% do seu salario em transporte por mes')
                 print(f'voce esta gastando {porcentagem_lazer}% do seu salario em lazer por mes')
@@ -48,14 +54,16 @@ if op == 1:
                     print("60% alimentação, transporte e lazer")
                     print("20% reserva de emergencia")
                     print("20% economia")
-                    print(f"comparando com a sua divisao:\n{alimentacao_transporte_lazer}% de alimentação, transporte e lazer\n{porcentagem_reserva}% de reserva de emergencia\n{porcentagem_economia} economiza por mes")
+                    print(f"comparando com a sua divisao:\n{alimentacao_transporte_lazer}% de alimentação, transporte e lazer\n{porcentagem_reserva}% de reserva de emergencia\n{porcentagem_economia} reais voce economiza por mes")
                     print("=" * 60)
                 elif decisao == 'n':
                     print('ok:(')
                 elif (porcentagem_comida + porcentagem_transporte + porcentagem_lazer) <= divisao_ideal:
                     print('parabens a sua divisao salarial esta perfeita! ')
                     print("=" * 60)
-            elif gasto < salario * 0.6:
+            elif gasto < salariooo * 0.6:
+                salario.append(salarioo)
+                print(salario)
                 print(f'voce esta gastando {porcentagem_comida}% do seu salario em comida')
                 print(f'voce esta gastando {porcentagem_transporte}% do seu salario em transporte')
                 print(f'voce esta gastando {porcentagem_lazer}% do seu salario em lazer')
@@ -107,7 +115,7 @@ if op == 1:
                 gostou = input('voce gostou do atendimento? s/n')
             
             if gostou == 's':
-                print('obrigado pelo feedback!')
+                print('obrigado pelo feedback!\nencerrando nosso atendimento.')
                 break
             elif gostou == 'n':
                 print('o que podemos melhorar?')
