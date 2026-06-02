@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>economIA - Assistente Financeiro</title>
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:#111a2e;
+      --muted:#9fb0d0;
+      --text:#eaf0ff;
+      --primary:#4f8cff;
+      --danger:#ff5a6a;
+      --ok:#36d399;
+      --warn:#fbbf24;
+      --border: rgba(255,255,255,.10);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(79,140,255,.25), transparent),
+                  radial-gradient(1000px 500px at 90% 10%, rgba(54,211,153,.18), transparent),
+                  var(--bg);
+      color:var(--text);
+    }
+    .wrap{max-width:980px; margin:0 auto; padding:24px;}
+    header{display:flex; gap:14px; align-items:flex-start; justify-content:space-between; flex-wrap:wrap;}
+    .brand{display:flex; flex-direction:column; gap:6px}
+    .title{font-size:28px; font-weight:800; letter-spacing:.2px}
+    .subtitle{color:var(--muted)}
+
+    .grid{display:grid; grid-template-columns: 1.1fr .9fr; gap:18px; margin-top:18px}
+    @media (max-width: 860px){ .grid{grid-template-columns:1fr} }
+
+    .card{
+      background: rgba(17,26,46,.75);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:16px;
+      backdrop-filter: blur(6px);
+    }
+
+    .segmented{display:flex; gap:8px; flex-wrap:wrap}
+    .btn{
+      cursor:pointer;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:12px;
+      font-weight:700;
+      transition: .15s;
+    }
+    .btn:hover{transform: translateY(-1px); border-color: rgba(79,140,255,.45)}
+    .btn[aria-pressed="true"]{border-color: rgba(79,140,255,.75); background: rgba(79,140,255,.14)}
+
+    label{display:block; font-weight:700; margin:12px 0 6px; color:var(--text)}
+    input[type="number"], input[type="text"], select{
+      width:100%;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background: rgba(0,0,0,.18);
+      color:var(--text);
+      outline:none;
+    }
+    input[type="number" ]:focus, input[type="text"]:focus, select:focus{
+      border-color: rgba(79,140,255,.65);
+    }
+    .row{display:flex; gap:12px}
+    .row > *{flex:1}
+    @media (max-width: 520px){ .row{flex-direction:column} }
+
+    .actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px}
+    .primary{
+      background: rgba(79,140,255,.18);
+      border-color: rgba(79,140,255,.55);
+    }
+    .danger{
+      background: rgba(255,90,106,.14);
+      border-color: rgba(255,90,106,.55);
+    }
+
+    .hidden{display:none!important}
+
+    .result{
+      min-height: 260px;
+      white-space: pre-wrap;
+      line-height:1.35;
+    }
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 10px; border-radius:999px;
+      border:1px solid var(--border); background: rgba(255,255,255,.04);
+      margin:6px 8px 0 0;
+      color:var(--muted);
+      font-weight:700;
+    }
+    .dot{width:10px; height:10px; border-radius:50%; background: var(--muted)}
+    .dot.ok{background: var(--ok)}
+    .dot.warn{background: var(--warn)}
+    .dot.danger{background: var(--danger)}
+
+    .small{color:var(--muted); font-size:13px}
+    .hr{height:1px; background: var(--border); margin:14px 0}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="title">economIA</div>
+        <div class="subtitle">Assistente virtual e professor de economia (MVP em site)</div>
+      </div>
+      <div class="pill" title="Modo de uso">
+        <span class="dot" id="statusDot"></span>
+        <span id="statusText">Pronto</span>
+      </div>
+    </header>
+
+    <div class="grid">
+      <section class="card">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+          <div>
+            <div style="font-weight:900; font-size:18px;">Menu</div>
+            <div class="small">Escolha uma opção e preencha os campos.</div>
+          </div>
+          <div class="segmented" role="group" aria-label="Opções">
+            <button class="btn" id="btnAnalise" aria-pressed="true">1 - Análise geral</button>
+            <button class="btn" id="btnMeta" aria-pressed="false">2 - Meta financeira</button>
+          </div>
+        </div>
+
+        <div id="panelAnalise">
+          <label for="nome">Seu nome</label>
+          <input id="nome" type="text" placeholder="Ex: Maria" />
+
+          <label for="salario">Salário (R$)</label>
+          <input id="salario" type="number" min="0" step="0.01" placeholder="0.00" />
+
+          <div class="row">
+            <div>
+              <label for="alimentacao">Gasto com alimentação (R$)</label>
+              <input id="alimentacao" type="number" min="0" step="0.01" placeholder="0.00" />
+            </div>
+            <div>
+              <label for="transporte">Gasto com transporte (R$)</label>
+              <input id="transporte" type="number" min="0" step="0.01" placeholder="0.00" />
+            </div>
+          </div>
+
+          <div class="row">
+            <div>
+              <label for="lazer">Gasto com lazer (R$)</label>
+              <input id="lazer" type="number" min="0" step="0.01" placeholder="0.00" />
+            </div>
+            <div>
+              <label for="economia">Quanto economiza por mês (R$)</label>
+              <input id="economia" type="number" min="0" step="0.01" placeholder="0.00" />
+            </div>
+          </div>
+
+          <label for="reserva">Quanto guarda para emergências (R$)</label>
+          <input id="reserva" type="number" min="0" step="0.01" placeholder="0.00" />
+
+          <div class="actions">
+            <button class="btn primary" id="btnCalcularAnalise">Calcular análise</button>
+            <button class="btn danger" id="btnLimparAnalise" type="button">Limpar</button>
+          </div>
+
+          <div class="hr"></div>
+          <label for="ajuda">Quer dicas personalizadas?</label>
+          <select id="ajuda">
+            <option value="sim">Sim, quero dicas</option>
+            <option value="nao">Não, só quero o cálculo</option>
+          </select>
+
+          <div class="hidden" id="panelOpcaoDicas">
+            <label for="opcaoDicas">Qual tipo de dica?</label>
+            <select id="opcaoDicas">
+              <option value="1">1 - Gastar menos</option>
+              <option value="2">2 - Controlar despesas desnecessárias</option>
+              <option value="3">3 - Economizar dinheiro</option>
+              <option value="4">4 - Melhorar vida financeira</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="panelMeta" class="hidden">
+          <label for="nomeMeta">Seu nome</label>
+          <input id="nomeMeta" type="text" placeholder="Ex: João" />
+
+          <label for="meta">Qual valor da sua meta (R$)</label>
+          <input id="meta" type="number" min="0" step="0.01" placeholder="0.00" />
+
+          <label for="guardar">Quanto consegue guardar por mês (R$)</label>
+          <input id="guardar" type="number" min="0" step="0.01" placeholder="0.00" />
+
+          <div class="actions">
+            <button class="btn primary" id="btnCalcularMeta">Calcular meta</button>
+            <button class="btn danger" id="btnLimparMeta" type="button">Limpar</button>
+          </div>
+        </div>
+      </section>
+
+      <aside class="card">
+        <div style="font-weight:900; font-size:18px;">Resultado</div>
+        <div class="small" style="margin-top:6px">As informações abaixo são calculadas no navegador (sem servidor).</div>
+        <div class="result" id="result" style="margin-top:12px"></div>
+      </aside>
+    </div>
+
+    <div class="small" style="margin-top:18px; text-align:center;">
+      Dica: para testar, abra este arquivo no navegador (duplo clique) ou via servidor local.
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
+
