@@ -28,8 +28,9 @@ function pct(n) {
 }
 
 function readNumber(id) {
-  const v = $(id).value;
-  const num = Number(v);
+  const el = $(id);
+  if (!el) return NaN;
+  const num = Number(el.value);
   return Number.isFinite(num) ? num : NaN;
 }
 
@@ -41,31 +42,90 @@ function requirePositiveNumber(val, label) {
 
 function setActive(mode) {
   const isAnalise = mode === "analise";
-  btnAnalise.setAttribute("aria-pressed", String(isAnalise));
-  btnMeta.setAttribute("aria-pressed", String(!isAnalise));
-  panelAnalise.classList.toggle("hidden", !isAnalise);
-  panelMeta.classList.toggle("hidden", isAnalise);
-  result.textContent = "";
-  setStatus("Pronto", "neutral");
+  if (btnAnalise) btnAnalise.setAttribute("aria-pressed", String(isAnalise));
+  if (btnMeta) btnMeta.setAttribute("aria-pressed", String(!isAnalise));
+  if (panelAnalise) panelAnalise.classList.toggle("hidden", !isAnalise);
+  if (panelMeta) panelMeta.classList.toggle("hidden", isAnalise);
+  if (result) result.textContent = "";
+  if (statusText && statusDot) setStatus("Pronto", "neutral");
 }
 
-btnAnalise.addEventListener("click", () => setActive("analise"));
-btnMeta.addEventListener("click", () => setActive("meta"));
+// Bootstrap seguro: se algum essencial faltar, não quebra silenciosamente.
+try {
+  const essentials = [
+    [btnAnalise, "btnAnalise"],
+    [btnMeta, "btnMeta"],
+    [panelAnalise, "panelAnalise"],
+    [panelMeta, "panelMeta"],
+    [result, "result"],
+    [statusDot, "statusDot"],
+    [statusText, "statusText"],
+  ];
 
-$("ajuda").addEventListener("change", () => {
-  $("panelOpcaoDicas").classList.toggle("hidden", $("ajuda").value !== "sim");
-});
+  for (const [el, id] of essentials) {
+    if (!el) throw new Error(`Elemento ausente no HTML: #${id}`);
+  }
+
+  btnAnalise.addEventListener("click", () => setActive("analise"));
+  btnMeta.addEventListener("click", () => setActive("meta"));
+
+  const ajudaEl = $("ajuda");
+  if (ajudaEl) {
+    ajudaEl.addEventListener("change", () => {
+      const opcaoPanel = $("panelOpcaoDicas");
+      if (!opcaoPanel) return;
+      opcaoPanel.classList.toggle("hidden", ajudaEl.value !== "sim");
+    });
+  }
+
+  const btnCalcularAnalise = $("btnCalcularAnalise");
+  const btnCalcularMeta = $("btnCalcularMeta");
+  const btnLimparAnalise = $("btnLimparAnalise");
+  const btnLimparMeta = $("btnLimparMeta");
+
+  if (btnCalcularAnalise) btnCalcularAnalise.addEventListener("click", calcularAnalise);
+  if (btnCalcularMeta) btnCalcularMeta.addEventListener("click", calcularMeta);
+
+  if (btnLimparAnalise) {
+    btnLimparAnalise.addEventListener("click", () => {
+      ["nome", "salario", "alimentacao", "transporte", "lazer", "economia", "reserva"].forEach((id) => {
+        const el = $(id);
+        if (el) el.value = "";
+      });
+      const ajuda = $("ajuda");
+      if (ajuda) ajuda.value = "sim";
+      const opcao = $("panelOpcaoDicas");
+      if (opcao) opcao.classList.remove("hidden");
+      if (result) result.textContent = "";
+      setStatus("Pronto", "neutral");
+    });
+  }
+
+  if (btnLimparMeta) {
+    btnLimparMeta.addEventListener("click", () => {
+      ["nomeMeta", "meta", "guardar"].forEach((id) => {
+        const el = $(id);
+        if (el) el.value = "";
+      });
+      if (result) result.textContent = "";
+      setStatus("Pronto", "neutral");
+    });
+  }
+} catch (e) {
+  if (result) {
+    result.textContent = String(e.message || e);
+    setStatus("Não foi possível inicializar", "danger");
+  }
+  // Evita erro em cascata
+  throw e;
+}
 
 function dicaPorOpcao(opcao) {
   switch (String(opcao)) {
     case "1":
       return ["- Evite compras por impulso", "- Faça uma lista antes de comprar", "- Compare preços"].join("\n");
     case "2":
-      return [
-        "- Anote tudo que você gasta",
-        "- Corte gastos que não são essenciais",
-        "- Defina um limite mensal",
-      ].join("\n");
+      return ["- Anote tudo que você gasta", "- Corte gastos que não são essenciais", "- Defina um limite mensal"].join("\n");
     case "3":
       return [
         "- Guarde pelo menos 10% do que ganha",
@@ -84,7 +144,7 @@ function dicaPorOpcao(opcao) {
 }
 
 function calcularAnalise() {
-  const nome = ($("nome").value || "").trim();
+  const nome = ($("nome")?.value || "").trim();
 
   const salario = readNumber("salario");
   const alimentacao = readNumber("alimentacao");
@@ -110,9 +170,12 @@ function calcularAnalise() {
     const economiaCalculada = salario - gastos;
 
     // Atualiza o campo economia no formulário (disabled no HTML)
-    $("economia").value = Number.isFinite(economiaCalculada)
-      ? economiaCalculada.toFixed(2).replace(".", ",")
-      : "";
+    const economiaEl = $("economia");
+    if (economiaEl) {
+      economiaEl.value = Number.isFinite(economiaCalculada)
+        ? economiaCalculada.toFixed(2).replace(".", ",")
+        : "";
+    }
 
     const porcentagem_comida = pct((alimentacao / salario) * 100);
     const porcentagem_transporte = pct((transporte / salario) * 100);
@@ -122,14 +185,15 @@ function calcularAnalise() {
 
     const despesasPct = porcentagem_comida + porcentagem_transporte + porcentagem_lazer;
 
-    const dicas = $("ajuda").value === "sim";
-    const opcaoDicas = $("opcaoDicas").value;
+    const ajuda = $("ajuda");
+    const dicas = (ajuda?.value || "nao") === "sim";
+    const opcaoDicas = $("opcaoDicas")?.value;
 
     const economiaPct = Math.round((economiaCalculada / salario) * 100);
     const gastosPct = Math.round((gastos / salario) * 100);
 
     let msg = `${nome ? `Olá, ${nome}!\n` : ""}`;
-    msg += "Assistente virtual e professor de economia (MVP em site):\n";
+    msg += "Assistente virtual e seu professor de economia (o MVP em site):\n";
     msg += `— Seu salário: ${formatBRL(salario)}.\n`;
     msg += `— Gastos essenciais (alimentação+transporte+lazer): ${formatBRL(gastos)} (~${gastosPct}% do salário).\n`;
     msg += `— Economia do mês (salário - gastos): ${formatBRL(economiaCalculada)} (${economiaPct}% do salário).\n\n`;
@@ -193,15 +257,17 @@ function calcularAnalise() {
       setStatus("Bom andamento", "ok");
     }
 
-    result.textContent = msg;
+    if (result) result.textContent = msg;
   } catch (e) {
     setStatus("Não foi possível concluir", "danger");
-    result.textContent = "Não foi possível concluir sua análise agora. Verifique os valores informados e tente novamente.";
+    if (result) {
+      result.textContent = "Não foi possível concluir sua análise agora. Verifique os valores informados e tente novamente.";
+    }
   }
 }
 
 function calcularMeta() {
-  const nome = ($("nomeMeta").value || "").trim();
+  const nome = ($("nomeMeta")?.value || "").trim();
 
   const meta = readNumber("meta");
   const guardar = readNumber("guardar");
@@ -229,31 +295,12 @@ function calcularMeta() {
       setStatus("Meta calculada", "ok");
     }
 
-    result.textContent = msg;
+    if (result) result.textContent = msg;
   } catch (e) {
     setStatus("Não foi possível concluir", "danger");
-    result.textContent = "Não foi possível concluir o cálculo da sua meta agora. Verifique os valores informados e tente novamente.";
+    if (result) {
+      result.textContent = "Não foi possível concluir o cálculo da sua meta agora. Verifique os valores informados e tente novamente.";
+    }
   }
 }
-
-$("btnCalcularAnalise").addEventListener("click", calcularAnalise);
-$("btnCalcularMeta").addEventListener("click", calcularMeta);
-
-$("btnLimparAnalise").addEventListener("click", () => {
-  ["nome", "salario", "alimentacao", "transporte", "lazer", "economia", "reserva"].forEach((id) => {
-    $(id).value = "";
-  });
-  $("ajuda").value = "sim";
-  $("panelOpcaoDicas").classList.remove("hidden");
-  result.textContent = "";
-  setStatus("Pronto", "neutral");
-});
-
-$("btnLimparMeta").addEventListener("click", () => {
-  ["nomeMeta", "meta", "guardar"].forEach((id) => {
-    $(id).value = "";
-  });
-  result.textContent = "";
-  setStatus("Pronto", "neutral");
-});
 
