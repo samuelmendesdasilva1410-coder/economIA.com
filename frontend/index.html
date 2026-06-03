@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>economIA - Assistente Financeiro</title>
+  <title>economIA - Relatório Financeiro</title>
   <style>
     :root{
       --bg:#0b1220;
@@ -112,7 +112,7 @@
     <header>
       <div class="brand">
         <div class="title">economIA</div>
-        <div class="subtitle">Assistente virtual e professor de economia (MVP em site)</div>
+<div class="subtitle">Assistente virtual e professor de economia (MVP em site)</div>
       </div>
       <div class="pill" title="Modo de uso">
         <span class="dot" id="statusDot"></span>
@@ -157,13 +157,17 @@
               <input id="lazer" type="number" min="0" step="0.01" placeholder="0.00" />
             </div>
             <div>
-              <label for="economia">Quanto economiza por mês (R$)</label>
-              <input id="economia" type="number" min="0" step="0.01" placeholder="0.00" />
+              <label for="economia">Economia calculada por mês (R$)</label>
+              <input id="economia" type="number" min="0" step="0.01" placeholder="(calculado)" disabled />
+              <div class="small">(calculado = salário − (alimentação + transporte + lazer))</div>
             </div>
           </div>
 
+
           <label for="reserva">Quanto guarda para emergências (R$)</label>
           <input id="reserva" type="number" min="0" step="0.01" placeholder="0.00" />
+          <div class="small">A reserva não altera o cálculo de “quanto economiza” (somente como informação extra).</div>
+
 
           <div class="actions">
             <button class="btn primary" id="btnCalcularAnalise">Calcular análise</button>
@@ -207,13 +211,13 @@
 
       <aside class="card">
         <div style="font-weight:900; font-size:18px;">Resultado</div>
-        <div class="small" style="margin-top:6px">As informações abaixo são calculadas no navegador (sem servidor).</div>
+        <div class="small" style="margin-top:6px">Relatório gerado a partir dos seus dados.</div>
         <div class="result" id="result" style="margin-top:12px"></div>
       </aside>
     </div>
 
     <div class="small" style="margin-top:18px; text-align:center;">
-      Dica: para testar, abra este arquivo no navegador (duplo clique) ou via servidor local.
+      <span aria-hidden="true">💡</span> Dica: preencha os campos e clique em “Calcular” para ver o relatório (a economia é calculada automaticamente).
     </div>
   </div>
 

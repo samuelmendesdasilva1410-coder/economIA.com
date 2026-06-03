@@ -6,7 +6,9 @@ Integrante 1: [Samuel - programador
 
 Integrante 2: [Arthur - idealizador]
 
-Integrante 3: [Nome e Função]
+Integrante 3: [Tiffany - idealizadora]
+
+Integrante 4: [Raissa - idealizadora]
 
 🎯 1. Visão do Produto
 
@@ -32,7 +34,6 @@ dicas de como economizar melhor
 🚫 3. Fora de Escopo
 
 O que o sistema NÃO vai fazer (para não perdermos tempo)?
-não temos front end
 não direcionamos o dinheiro automaticamente
 (Ex: Não teremos interface gráfica no começo, apenas terminal. / Não teremos sistema de empréstimo).
 Escreva o que fica de fora aqui...
@@ -43,17 +44,17 @@ Variáveis: Quais dados o sistema precisa guardar na memória?
 
 ( x) Ex: saldo_usuario (Int)
 
-( )
+( x )
 
 Condicionais (If/Else): Onde o sistema precisará tomar decisões?
 
-() Ex: Se o saque for maior que o saldo, dar erro.
+(x) Ex: Se o saque for maior que o saldo, dar erro.
 
 ( x )
 
 Loops (While/For): Onde o sistema precisará repetir ações?
 
-(x ) Ex: O Menu principal ficará num While True até o usuário escolher Sair.
+( x ) Ex: O Menu principal ficará num While True até o usuário escolher Sair.
 
 ( x )
 
