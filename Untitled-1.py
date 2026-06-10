@@ -32,7 +32,8 @@ if op == 1:
             porcentagem_economia = int((economia / salariooo) * 100)
             porcentagem_reserva = int((reserva / salariooo) * 100)
             alimentacao_transporte_lazer = (porcentagem_comida + porcentagem_transporte + porcentagem_lazer) 
-            divisao_ideal = (porcentagem_comida + porcentagem_transporte + porcentagem_lazer) < 80% salariooo
+            divisao_ideal = (porcentagem_comida + porcentagem_transporte + porcentagem_lazer) < 80
+
             print("=" * 60)
             import time 
             for i in range (3):
